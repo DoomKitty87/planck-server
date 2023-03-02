@@ -1,0 +1,11 @@
+body {
+    font-family: Tahoma;
+}
+
+#conns-stats {
+    display: inline-block;
+    border-radius: 25px;
+    background-color: grey;
+    margin: 30px;
+    padding: 20px;
+}

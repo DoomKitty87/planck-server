@@ -1,12 +1,14 @@
 import socket
 import sys
 import threading
+import datetime
 from flask import Flask
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 connections = {}
 idle_connections = {}
+start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
 handshaking = 0
 
@@ -54,10 +56,9 @@ def chat_server():
         try:
           data = connections[conn][0].recv(16)
           received += data
-          print(received)
         except:
           break
-      if (received != ""):
+      if (received != bytes()):
         received = str(received, 'utf-8')
         identifier = received[:5]
         print(identifier)
@@ -67,9 +68,23 @@ def chat_server():
 chat_server_thread = threading.Thread(target=chat_server)
 chat_server_thread.start()
 
-
 @web_server.route("/")
 def index():
-  return f"The current number of connections is {len(connections)}"
+  return f"""
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <title>Planck server status</title>
+      <link rel="stylesheet" href="/static/css/style.css">
+    </head>
+    <body>
+      <div id="conns-stats">
+        <h1>Planck server status</h1>
+        <img src="/static/images/online.png"> Connections: {len(connections)} <br>
+        <img src="/static/images/idle.png"> Idlers: unknown <br>
+      </div>
+    <body>
+  <html>
+  """
 
 web_server.run()
