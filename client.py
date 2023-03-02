@@ -98,6 +98,7 @@ timer.setInterval(500)
 
 connectbutton.clicked.connect(connect_to_server)
 sendmessagebutton.clicked.connect(send_message)
+toggleidlebutton.clicked.connect(toggle_idle)
 appInstance.aboutToQuit.connect(on_exit)
 
 timer.start()
