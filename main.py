@@ -3,6 +3,7 @@ import sys
 import threading
 import datetime
 import errno
+import re
 from flask import Flask
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -67,10 +68,31 @@ def chat_server():
           break
       if (received != bytes()):
         received = str(received, 'utf-8')
-        identifier = received[:5]
-        print(identifier)
-        if (len(identifier) > 0):
-          connections[identifier][0].sendall(bytes(received[5:], encoding="utf-8"))
+        if received[0] == "§":
+          # is a command
+          sender = re.search('§(.*?)>', received).group(1)
+          command = re.search('§(.*?)>\[', received).group(1)
+          match command:
+            case "online_user":
+              identifiers = re.search('§\[(.*)\]').group(1).split(",")
+              results = []
+              for id in identifiers:
+                if id in connections:
+                  results.append("online")
+                elif id in idle_connections:
+                  results.append("idle")
+                else:
+                  results.append("offline")
+                connections[sender][0].sendall(bytes(','.join(results)), "utf-8")
+            case "toggle_idle":
+              print(connections)  
+            case _:
+              print("invalid command")
+        elif received[0] == "@":
+          # is a message
+          sender = re.search('@(.*?)>', received).group(1)
+          recipient = re.search('>(.*?)>\[', received).group(1)
+          connections[recipient][0].sendall(bytes(received, encoding="utf-8"))
 
 chat_server_thread = threading.Thread(target=chat_server)
 chat_server_thread.start()

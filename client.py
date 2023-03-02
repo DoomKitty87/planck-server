@@ -22,7 +22,9 @@ messageentry = QPlainTextEdit()
 
 connectbutton = QPushButton('connect to server')
 
-sendmessagebutton = QPushButton('Send Message')
+sendmessagebutton = QPushButton('send message')
+
+toggleidlebutton = QPushButton('toggle idle')
 
 layout = QVBoxLayout()
 layout.addWidget(label1)
@@ -35,6 +37,7 @@ layout.addWidget(toidentry)
 layout.addWidget(label4)
 layout.addWidget(messageentry)
 layout.addWidget(sendmessagebutton)
+layout.addWidget(toggleidlebutton)
 
 window.setLayout(layout)
 
@@ -79,8 +82,11 @@ def send_message():
   print('sending message...')
   print(f'message contents: {message}')
   print(f'to {recipient} on server {hostentry.text()}')
-  sock.sendall(bytes(recipient, encoding='utf-8'))
-  sock.sendall(bytes(message, encoding='utf-8'))
+  sock.sendall(bytes(f"@{identity.text()}>{toidentry.text()}>[{messageentry.toPlainText()}]", encoding='utf-8'))
+
+def toggle_idle():
+  sock.sendall(bytes(f"§{identity.text()}>toggle_idle>[]", encoding='utf-8'))
+
 
 def on_exit():
   print('exiting')
