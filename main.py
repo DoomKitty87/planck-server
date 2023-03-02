@@ -2,6 +2,7 @@ import socket
 import sys
 import threading
 import datetime
+import errno
 from flask import Flask
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -13,6 +14,7 @@ start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 handshaking = 0
 
 server_address = ('localhost', 6626)
+sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(server_address)
 sock.settimeout(0.2)
 sock.listen(1)
@@ -50,7 +52,12 @@ def chat_server():
     for conn in connections:
       try:
         received = connections[conn][0].recv(16)
-      except:
+      except socket.timeout:
+        print('timed out')
+        continue
+      except socket.error:
+        print('disconnected')
+        del connections[conn]
         continue
       while True:
         try:

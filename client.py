@@ -42,6 +42,7 @@ connected = False
 sock = None
 
 def wait_for_messages():
+  global connected
   if (connected == True):
     received = bytes()
     while True:
@@ -55,28 +56,35 @@ def wait_for_messages():
 
 def connect_to_server():
   try:
+    global connected
+    global sock
     sock = socket.create_connection((hostentry.text(), 6626))
     sock.setblocking(0)
     message = bytes(identity.text(), encoding='utf8')
     print(f'sending {message}')
     sock.sendall(message)
     connected = True
-    return sock
 
   finally:
     print('handshake completed with server')
 
 def send_message():
+  global sock
+  global connected
   if (connected == False):
     print('not connected to server.')
     return
   recipient = toidentry.text()
-  message = messageentry.text()
+  message = messageentry.toPlainText()
   print('sending message...')
   print(f'message contents: {message}')
   print(f'to {recipient} on server {hostentry.text()}')
   sock.sendall(bytes(recipient, encoding='utf-8'))
   sock.sendall(bytes(message, encoding='utf-8'))
+
+def on_exit():
+  print('exiting')
+  sock.close()
 
 timer = QTimer()
 timer.timeout.connect(wait_for_messages)
@@ -84,6 +92,7 @@ timer.setInterval(500)
 
 connectbutton.clicked.connect(connect_to_server)
 sendmessagebutton.clicked.connect(send_message)
+appInstance.aboutToQuit.connect(on_exit)
 
 timer.start()
 window.show()
