@@ -4,11 +4,15 @@ import threading
 import datetime
 import errno
 import re
+import select
 from flask import Flask
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-connections = {}
+connections = []
+ids = []
+statuses = []
+
 online_ct = 0
 idle_ct = 0
 start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
@@ -18,7 +22,7 @@ handshaking = 0
 server_address = ('localhost', 6626)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(server_address)
-sock.settimeout(0.2)
+sock.settimeout(0.1)
 sock.listen(1)
 
 web_server = Flask(__name__)
@@ -32,42 +36,50 @@ def chat_server():
 
       try:
         print(f"Connection from {curr_address}")
-        curr_client.settimeout(0.2)
 
         key = ""
 
         try:
+          curr_client.settimeout(0.1)
           data = curr_client.recv(256)
           key += str(data, 'utf-8')
           print(f'received {data}')
-          connections.update({key:[curr_client, curr_address, "online"]})
+          connections.append(curr_client)
+          ids.append(key)
+          statuses.append("online")
           print(key)
-          print(connections[key])
+          print(curr_client)
         except:
-          print('handshake failed with ' + curr_address[0])
+          print('handshake failed with ' + curr_address)
         
       finally:
         online_ct += 1
-        print(f'finished initial client handshake with {curr_address[0]}')
+        print(f'finished initial client handshake with {curr_address}')
 
     except socket.timeout:
       pass
+    
+    if len(connections) == 0:
+      continue
+    r, w, e = select.select(connections, [], [], 0)
 
-    for conn in connections:
+    if not r:
+      print('No busy connections...')
+
+    for conn in r:
       try:
-        received = connections[conn][0].recv(16)
-        if (received == bytes()):
-          del connections[conn]
-          break
-      except socket.EWOULDBLOCK or socket.EAGAIN:
-        print('timed out')
+        received = conn.recv(16)
+      except socket.timeout:
         continue
-      except socket.error:
-        print('disconnected')
-        continue
+      except ConnectionResetError:
+        print('error occurred')
+        conn.close()
+        connections.remove(conn)
+        statuses.remove(statuses[connections.index(conn)])
+        ids.remove(ids[connections.index(conn)])
       while True:
         try:
-          data = connections[conn][0].recv(16)
+          data = conn.recv(16)
           received += data
         except:
           break
@@ -82,26 +94,28 @@ def chat_server():
               identifiers = re.search('§\[(.*)\]').group(1).split(",")
               results = []
               for id in identifiers:
-                if id in connections[id][2] == "online":
+                if statuses[ids.index(id)] == "online":
                   results.append("online")
-                elif id in connections[id][2] == "idle":
+                elif statuses[ids.index(id)] == "idle":
                   results.append("idle")
                 else:
                   results.append("offline")
-                connections[sender][0].sendall(bytes(','.join(results)), "utf-8")
+                conn.sendall(bytes(','.join(results)), "utf-8")
             case "toggle_idle":
-              if connections[sender][2] == "online":
+              if statuses[connections.index(conn)] == "online":
                 online_ct -= 1
                 idle_ct += 1
-                connections[sender][2] = "idle"
-              elif connections[sender][2] == "idle":
+                statuses[connections.index(conn)] = "idle"
+              elif statuses[connections.index(conn)] == "idle":
                 online_ct += 1
                 idle_ct -= 1
-                connections[sender][2] = "online"
+                statuses[connections.index(conn)] = "online"
               else:
                 print("toggle idle failed")
             case "client_hangup":
-              del connections[sender]
+              connections.remove(conn)
+              ids.remove(connections.index(conn))
+              statuses.remove(connections.index(conn))
               break
             case _:
               print("invalid command")
@@ -109,7 +123,7 @@ def chat_server():
           # is a message
           sender = re.search('@(.*?)>', received).group(1)
           recipient = re.search('>(.*?)>\[', received).group(1)
-          connections[recipient][0].sendall(bytes(received, encoding="utf-8"))
+          connections[ids.index(recipient)].sendall(bytes(received, encoding="utf-8"))
 
 chat_server_thread = threading.Thread(target=chat_server)
 chat_server_thread.start()
