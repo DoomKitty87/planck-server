@@ -110,7 +110,6 @@ def toggle_idle():
 
 def on_exit():
   print('exiting')
-  sock.close()
 
 timer = QTimer()
 timer.timeout.connect(wait_for_messages)

@@ -17,8 +17,6 @@ online_ct = 0
 idle_ct = 0
 start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-handshaking = 0
-
 server_address = ('localhost', 6626)
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(server_address)
@@ -29,7 +27,7 @@ web_server = Flask(__name__)
 
 def chat_server():
   while True:
-    global online_ct, idle_ct
+    global online_ct, idle_ct, connections, ids, statuses
     print('Waiting for a connection')
     try:
       curr_client, curr_address = sock.accept()
