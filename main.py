@@ -56,12 +56,14 @@ def chat_server():
     for conn in connections:
       try:
         received = connections[conn][0].recv(16)
-      except socket.timeout:
+        if (received == bytes()):
+          del connections[conn]
+          break
+      except socket.EWOULDBLOCK or socket.EAGAIN:
         print('timed out')
         continue
       except socket.error:
         print('disconnected')
-        del connections[conn]
         continue
       while True:
         try:
@@ -98,6 +100,9 @@ def chat_server():
                 connections[sender][2] = "online"
               else:
                 print("toggle idle failed")
+            case "client_hangup":
+              del connections[sender]
+              break
             case _:
               print("invalid command")
         elif received[0] == "@":

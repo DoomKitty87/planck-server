@@ -1,7 +1,8 @@
 import sys
 import socket
-from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QVBoxLayout, QPushButton, QPlainTextEdit
-from PySide2.QtCore import QTimer
+from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QGridLayout, QPushButton, QPlainTextEdit
+from PySide2.QtCore import QTimer, QSize
+from PySide2.QtGui import QIcon
 
 appInstance = QApplication(sys.argv)
 
@@ -9,13 +10,22 @@ window = QWidget()
 window.setGeometry(100, 100, 250, 150)
 window.setWindowTitle('Planck Client Alpha')
 
-label1 = QLabel('Enter host: ')
+connectedlabel = QLabel("Offline.")
+connlightbutton = QPushButton()
+connlightbutton.setFixedWidth(24)
+connlightbutton.setFixedHeight(24)
+connlightbutton.setIcon(QIcon("C:/Users/SpikyLlama/Documents/GitHub/planck-server/static/images/idle.png"))
+connlightbutton.setIconSize(QSize(24, 24))
+currconnectionlabel = QLabel("No server connected.")
+
+label1 = QLabel('Enter host and port: ')
 label2 = QLabel('Enter id: ')
 
 label3 = QLabel('Enter recipient id: ')
 label4 = QLabel('Enter message: ')
 
 hostentry = QLineEdit()
+portentry = QLineEdit()
 identity = QLineEdit()
 toidentry = QLineEdit()
 messageentry = QPlainTextEdit()
@@ -26,9 +36,13 @@ sendmessagebutton = QPushButton('send message')
 
 toggleidlebutton = QPushButton('toggle idle')
 
-layout = QVBoxLayout()
+layout = QGridLayout()
+layout.addWidget(connlightbutton, 0, 0, 1, 1)
+layout.addWidget(connectedlabel, 0, 1, 1, 1)
+layout.addWidget(currconnectionlabel, 1, 1, 1, 1)
 layout.addWidget(label1)
 layout.addWidget(hostentry)
+layout.addWidget(portentry)
 layout.addWidget(label2)
 layout.addWidget(identity)
 layout.addWidget(connectbutton)
@@ -57,19 +71,28 @@ def wait_for_messages():
           print(str(received, 'utf-8'))
         break
 
-def connect_to_server():
-  try:
-    global connected
-    global sock
-    sock = socket.create_connection((hostentry.text(), 6626))
+def toggle_connect_to_server():
+  global connected
+  global sock
+  if sock == None:
+    sock = socket.create_connection((hostentry.text(), portentry.text()))
     sock.setblocking(0)
     message = bytes(identity.text(), encoding='utf8')
     print(f'sending {message}')
     sock.sendall(message)
     connected = True
-
-  finally:
-    print('handshake completed with server')
+    currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
+  else:
+    sock.close()
+    sock = socket.create_connection((hostentry.text(), portentry.text()))
+    sock.setblocking(0)
+    message = bytes(identity.text(), encoding='utf8')
+    print(f'sending {message}')
+    sock.sendall(message)
+    connected = True
+    currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
+  connectedlabel = "Online."
+  print('handshake completed with server')
 
 def send_message():
   global sock
@@ -96,7 +119,7 @@ timer = QTimer()
 timer.timeout.connect(wait_for_messages)
 timer.setInterval(500)
 
-connectbutton.clicked.connect(connect_to_server)
+connectbutton.clicked.connect(toggle_connect_to_server)
 sendmessagebutton.clicked.connect(send_message)
 toggleidlebutton.clicked.connect(toggle_idle)
 appInstance.aboutToQuit.connect(on_exit)
