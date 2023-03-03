@@ -14,6 +14,7 @@ connectedlabel = QLabel("Offline.")
 connlightbutton = QPushButton()
 connlightbutton.setFixedWidth(24)
 connlightbutton.setFixedHeight(24)
+connlightbutton.setStyleSheet("QPushButton { border : 0; background: transparent; }")
 connlightbutton.setIcon(QIcon("C:/Users/SpikyLlama/Documents/GitHub/planck-server/static/images/idle.png"))
 connlightbutton.setIconSize(QSize(24, 24))
 currconnectionlabel = QLabel("No server connected.")
@@ -34,24 +35,21 @@ connectbutton = QPushButton('connect to server')
 
 sendmessagebutton = QPushButton('send message')
 
-toggleidlebutton = QPushButton('toggle idle')
-
 layout = QGridLayout()
 layout.addWidget(connlightbutton, 0, 0, 1, 1)
 layout.addWidget(connectedlabel, 0, 1, 1, 1)
 layout.addWidget(currconnectionlabel, 1, 1, 1, 1)
-layout.addWidget(label1)
-layout.addWidget(hostentry)
-layout.addWidget(portentry)
-layout.addWidget(label2)
-layout.addWidget(identity)
-layout.addWidget(connectbutton)
-layout.addWidget(label3)
-layout.addWidget(toidentry)
-layout.addWidget(label4)
-layout.addWidget(messageentry)
-layout.addWidget(sendmessagebutton)
-layout.addWidget(toggleidlebutton)
+layout.addWidget(label1, 2, 1)
+layout.addWidget(hostentry, 3, 1)
+layout.addWidget(portentry, 4, 1)
+layout.addWidget(label2, 5, 1)
+layout.addWidget(identity, 6, 1)
+layout.addWidget(connectbutton, 7, 1)
+layout.addWidget(label3, 8, 3)
+layout.addWidget(toidentry, 9, 3)
+layout.addWidget(label4, 10, 3)
+layout.addWidget(messageentry, 11, 3)
+layout.addWidget(sendmessagebutton, 12, 3)
 
 window.setLayout(layout)
 
@@ -110,7 +108,6 @@ def send_message():
 def toggle_idle():
   sock.sendall(bytes(f"§{identity.text()}>toggle_idle>[]", encoding='utf-8'))
 
-
 def on_exit():
   print('exiting')
   sock.close()
@@ -121,7 +118,7 @@ timer.setInterval(500)
 
 connectbutton.clicked.connect(toggle_connect_to_server)
 sendmessagebutton.clicked.connect(send_message)
-toggleidlebutton.clicked.connect(toggle_idle)
+connlightbutton.clicked.connect(toggle_idle)
 appInstance.aboutToQuit.connect(on_exit)
 
 timer.start()
