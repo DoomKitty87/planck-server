@@ -1,6 +1,7 @@
 import sys
 import socket
 import re
+from datetime import datetime
 from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QGridLayout, QPushButton, QPlainTextEdit
 from PySide2.QtCore import QTimer, QSize
 from PySide2.QtGui import QIcon
@@ -36,7 +37,7 @@ connectbutton = QPushButton('connect to server')
 disconnectbutton = QPushButton('disconnect')
 
 sendmessagebutton = QPushButton('send message')
-
+messageInfo = QLabel('')
 messageDisplay = QLabel('')
 
 layout = QGridLayout()
@@ -50,12 +51,13 @@ layout.addWidget(label2, 5, 1)
 layout.addWidget(identity, 6, 1)
 layout.addWidget(connectbutton, 7, 1)
 layout.addWidget(disconnectbutton, 8, 1)
-layout.addWidget(label3, 8, 3)
-layout.addWidget(toidentry, 9, 3)
-layout.addWidget(label4, 10, 3)
-layout.addWidget(messageentry, 11, 3)
-layout.addWidget(sendmessagebutton, 12, 3)
-layout.addWidget(messageDisplay, 13, 3)
+layout.addWidget(label3, 9, 1)
+layout.addWidget(toidentry, 10, 1)
+layout.addWidget(label4, 11, 1)
+layout.addWidget(messageentry, 12, 1)
+layout.addWidget(sendmessagebutton, 13, 1)
+layout.addWidget(messageInfo, 0, 2)
+layout.addWidget(messageDisplay, 1, 2)
 
 window.setLayout(layout)
 
@@ -76,6 +78,7 @@ def wait_for_messages():
           # Recieved a message
           print(str(received, 'utf-8'))
           message = re.search('\[(.*)\]', str(received, 'utf-8')).group(1)
+          messageInfo.setText(f"Message from {re.search('@(.*?)>', str(received, 'utf-8')).group(1)} at {datetime.now().strftime('%H:%M:%S')}:")
           messageDisplay.setText(message)
         break
 
