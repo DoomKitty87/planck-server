@@ -16,7 +16,7 @@ connlightbutton = QPushButton()
 connlightbutton.setFixedWidth(24)
 connlightbutton.setFixedHeight(24)
 connlightbutton.setStyleSheet("QPushButton { border : 0; background: transparent; }")
-connlightbutton.setIcon(QIcon("C:/Users/SpikyLlama/Documents/GitHub/planck-server/static/images/idle.png"))
+connlightbutton.setIcon(QIcon("static/images/idle.png"))
 connlightbutton.setIconSize(QSize(24, 24))
 currconnectionlabel = QLabel("No server connected.")
 
@@ -61,6 +61,7 @@ window.setLayout(layout)
 
 connected = False
 sock = None
+identifier = None
 
 def wait_for_messages():
   global connected
@@ -82,7 +83,9 @@ def toggle_connect_to_server():
   global connected
   global sock
   global connectedlabel
-  if sock == None:
+  global connlightbutton
+  global identifier
+  if connected == False:
     sock = socket.create_connection((hostentry.text(), portentry.text()))
     sock.setblocking(0)
     message = bytes(identity.text(), encoding='utf8')
@@ -91,6 +94,8 @@ def toggle_connect_to_server():
     connected = True
     currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
   else:
+    sock.sendall(bytes(f"§{identifier}>client_hangup>[]", encoding='utf-8'))
+    sock.shutdown(socket.SHUT_RDWR)
     sock.close()
     sock = socket.create_connection((hostentry.text(), portentry.text()))
     sock.setblocking(0)
@@ -100,17 +105,23 @@ def toggle_connect_to_server():
     connected = True
     currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
   connectedlabel = "Online."
+  connlightbutton.setIcon(QIcon("static/images/online.png"))
+  identifier = identity.text()
   print('handshake completed with server')
 
 def disconnect_from_server():
   global connected
   global sock
   global connectedlabel
+  global connlightbutton
   if (connected == True):
+    sock.sendall(bytes(f"§{identifier}>client_hangup>[]", encoding='utf-8'))
+    sock.shutdown(socket.SHUT_RDWR)
     sock.close()
     connected = False
     currconnectionlabel.setText("No server connected.")
     connectedlabel = "Offline."
+    connlightbutton.setIcon(QIcon("static/images/idle.png"))
 
 def send_message():
   global sock
@@ -123,10 +134,10 @@ def send_message():
   print('sending message...')
   print(f'message contents: {message}')
   print(f'to {recipient} on server {hostentry.text()}')
-  sock.sendall(bytes(f"@{identity.text()}>{toidentry.text()}>[{messageentry.toPlainText()}]", encoding='utf-8'))
+  sock.sendall(bytes(f"@{identifier}>{toidentry.text()}>[{messageentry.toPlainText()}]", encoding='utf-8'))
 
 def toggle_idle():
-  sock.sendall(bytes(f"§{identity.text()}>toggle_idle>[]", encoding='utf-8'))
+  sock.sendall(bytes(f"§{identifier}>toggle_idle>[]", encoding='utf-8'))
 
 def on_exit():
   print('exiting')

@@ -71,14 +71,29 @@ def chat_server():
         continue
       except ConnectionResetError:
         print('error occurred')
+        if statuses[connections.index(conn)] == "online":
+          online_ct -= 1
+        elif statuses[connections.index(conn)] == "idle":
+          idle_ct -= 1
         conn.close()
-        connections.remove(conn)
         statuses.remove(statuses[connections.index(conn)])
         ids.remove(ids[connections.index(conn)])
+        connections.remove(conn)
+      except:
+        print('error occurred')
+        if statuses[connections.index(conn)] == "online":
+          online_ct -= 1
+        elif statuses[connections.index(conn)] == "idle":
+          idle_ct -= 1
+        conn.close()
+        statuses.remove(statuses[connections.index(conn)])
+        ids.remove(ids[connections.index(conn)])
+        connections.remove(conn)
       while True:
         try:
           data = conn.recv(16)
           received += data
+          if (data == bytes()): break
         except:
           break
       if (received != bytes()):
@@ -111,9 +126,14 @@ def chat_server():
               else:
                 print("toggle idle failed")
             case "client_hangup":
+              if statuses[connections.index(conn)] == "online":
+                online_ct -= 1
+              elif statuses[connections.index(conn)] == "idle":
+                idle_ct -= 1
+              conn.close()
+              statuses.remove(statuses[connections.index(conn)])
+              ids.remove(ids[connections.index(conn)])
               connections.remove(conn)
-              ids.remove(connections.index(conn))
-              statuses.remove(connections.index(conn))
               break
             case _:
               print("invalid command")
