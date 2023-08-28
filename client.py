@@ -2,9 +2,9 @@ import sys
 import socket
 import re
 from datetime import datetime
-from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QGridLayout, QPushButton, QPlainTextEdit
+from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QGridLayout, QPushButton, QPlainTextEdit, QListView
 from PySide2.QtCore import QTimer, QSize
-from PySide2.QtGui import QIcon
+from PySide2.QtGui import QIcon, QStandardItem, QStandardItemModel
 
 appInstance = QApplication(sys.argv)
 
@@ -37,8 +37,11 @@ connectbutton = QPushButton('connect to server')
 disconnectbutton = QPushButton('disconnect')
 
 sendmessagebutton = QPushButton('send message')
-messageInfo = QLabel('')
-messageDisplay = QLabel('')
+#messageInfo = QLabel('')
+#messageDisplay = QLabel('')
+messageBox = QListView()
+model = QStandardItemModel()
+messageBox.setModel(model)
 
 layout = QGridLayout()
 layout.addWidget(connlightbutton, 0, 0, 1, 1)
@@ -56,8 +59,7 @@ layout.addWidget(toidentry, 10, 1)
 layout.addWidget(label4, 11, 1)
 layout.addWidget(messageentry, 12, 1)
 layout.addWidget(sendmessagebutton, 13, 1)
-layout.addWidget(messageInfo, 0, 2)
-layout.addWidget(messageDisplay, 1, 2)
+layout.addWidget(messageBox, 0, 2)
 
 window.setLayout(layout)
 
@@ -78,8 +80,8 @@ def wait_for_messages():
           # Recieved a message
           print(str(received, 'utf-8'))
           message = re.search('\[(.*)\]', str(received, 'utf-8')).group(1)
-          messageInfo.setText(f"Message from {re.search('@(.*?)>', str(received, 'utf-8')).group(1)} at {datetime.now().strftime('%H:%M:%S')}:")
-          messageDisplay.setText(message)
+          disp = QStandardItem(f"Message from {re.search('@(.*?)>', str(received, 'utf-8')).group(1)} at {datetime.now().strftime('%H:%M:%S')}:\n{message}")
+          model.appendRow(disp)
         break
 
 def toggle_connect_to_server():
