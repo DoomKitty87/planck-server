@@ -1,5 +1,6 @@
 import sys
 import socket
+import re
 from PySide2.QtWidgets import QApplication, QLabel, QWidget, QLineEdit, QGridLayout, QPushButton, QPlainTextEdit
 from PySide2.QtCore import QTimer, QSize
 from PySide2.QtGui import QIcon
@@ -35,6 +36,8 @@ connectbutton = QPushButton('connect to server')
 
 sendmessagebutton = QPushButton('send message')
 
+messageDisplay = QLabel('')
+
 layout = QGridLayout()
 layout.addWidget(connlightbutton, 0, 0, 1, 1)
 layout.addWidget(connectedlabel, 0, 1, 1, 1)
@@ -50,6 +53,7 @@ layout.addWidget(toidentry, 9, 3)
 layout.addWidget(label4, 10, 3)
 layout.addWidget(messageentry, 11, 3)
 layout.addWidget(sendmessagebutton, 12, 3)
+layout.addWidget(messageDisplay, 13, 3)
 
 window.setLayout(layout)
 
@@ -66,7 +70,10 @@ def wait_for_messages():
         received += data
       except:
         if (len(received) > 0):
+          # Recieved a message
           print(str(received, 'utf-8'))
+          message = re.search('\[(.*)\]', str(received, 'utf-8')).group(1)
+          messageDisplay.setText(message)
         break
 
 def toggle_connect_to_server():
