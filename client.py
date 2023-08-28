@@ -33,6 +33,7 @@ toidentry = QLineEdit()
 messageentry = QPlainTextEdit()
 
 connectbutton = QPushButton('connect to server')
+disconnectbutton = QPushButton('disconnect')
 
 sendmessagebutton = QPushButton('send message')
 
@@ -48,6 +49,7 @@ layout.addWidget(portentry, 4, 1)
 layout.addWidget(label2, 5, 1)
 layout.addWidget(identity, 6, 1)
 layout.addWidget(connectbutton, 7, 1)
+layout.addWidget(disconnectbutton, 8, 1)
 layout.addWidget(label3, 8, 3)
 layout.addWidget(toidentry, 9, 3)
 layout.addWidget(label4, 10, 3)
@@ -79,6 +81,7 @@ def wait_for_messages():
 def toggle_connect_to_server():
   global connected
   global sock
+  global connectedlabel
   if sock == None:
     sock = socket.create_connection((hostentry.text(), portentry.text()))
     sock.setblocking(0)
@@ -98,6 +101,16 @@ def toggle_connect_to_server():
     currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
   connectedlabel = "Online."
   print('handshake completed with server')
+
+def disconnect_from_server():
+  global connected
+  global sock
+  global connectedlabel
+  if (connected == True):
+    sock.close()
+    connected = False
+    currconnectionlabel.setText("No server connected.")
+    connectedlabel = "Offline."
 
 def send_message():
   global sock
@@ -123,6 +136,7 @@ timer.timeout.connect(wait_for_messages)
 timer.setInterval(500)
 
 connectbutton.clicked.connect(toggle_connect_to_server)
+disconnectbutton.clicked.connect(disconnect_from_server)
 sendmessagebutton.clicked.connect(send_message)
 connlightbutton.clicked.connect(toggle_idle)
 appInstance.aboutToQuit.connect(on_exit)
