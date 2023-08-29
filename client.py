@@ -11,6 +11,7 @@ appInstance = QApplication(sys.argv)
 window = QWidget()
 window.setGeometry(100, 100, 250, 150)
 window.setWindowTitle('Planck Client Alpha')
+window.setStyleSheet('styles.css')
 
 connectedlabel = QLabel("Offline.")
 connlightbutton = QPushButton()
