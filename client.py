@@ -9,9 +9,11 @@ from PySide2.QtGui import QIcon, QStandardItem, QStandardItemModel
 appInstance = QApplication(sys.argv)
 
 window = QWidget()
-window.setGeometry(100, 100, 250, 150)
+window.setGeometry(400, 400, 600, 250)
 window.setWindowTitle('Planck Client Alpha')
-window.setStyleSheet('styles.css')
+
+with open("styles.css", "r") as f:
+  window.setStyleSheet(f.read())
 
 connectedlabel = QLabel("Offline.")
 connlightbutton = QPushButton()
@@ -60,7 +62,7 @@ layout.addWidget(toidentry, 10, 1)
 layout.addWidget(label4, 11, 1)
 layout.addWidget(messageentry, 12, 1)
 layout.addWidget(sendmessagebutton, 13, 1)
-layout.addWidget(messageBox, 0, 2)
+layout.addWidget(messageBox, 0, 2, 13, 1)
 
 window.setLayout(layout)
 

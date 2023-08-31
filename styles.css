@@ -1,0 +1,17 @@
+@font-face {
+	font-family: "Inter";
+	src: url(static/inter.ttf) format("truetype");
+}
+
+QWidget {
+	color: #99a0a2;
+	background-color: #011117;
+	font-family: "Inter";
+}
+
+QLineEdit, QListView, QPlainTextEdit {
+	border-width: 2px;
+	border-style: solid;
+	border-color: #010a0e;
+}
+
