@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="600mm"
+   height="400mm"
+   viewBox="0 0 600 400"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   sodipodi:docname="client.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#011117"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="0.52724989"
+     inkscape:cx="1112.3758"
+     inkscape:cy="616.40601"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <circle
+       style="fill:#ffa638;fill-opacity:1;stroke-width:0"
+       id="path2369"
+       cx="28.352699"
+       cy="28.352699"
+       r="11.290898" />
+    <text
+       xml:space="preserve"
+       style="font-size:19.7556px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="47.17086"
+       y="35.365936"
+       id="text7521"><tspan
+         sodipodi:role="line"
+         id="tspan7519"
+         style="stroke-width:0;fill:#99a0a2;fill-opacity:1"
+         x="47.17086"
+         y="35.365936">OFFLINE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.7556px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="48.000595"
+       y="71.759933"
+       id="text9194"><tspan
+         sodipodi:role="line"
+         id="tspan9192"
+         style="stroke-width:0"
+         x="48.000595"
+         y="71.759933" /></text>
+    <text
+       xml:space="preserve"
+       style="font-size:19.7556px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="17.061802"
+       y="81.294472"
+       id="text9248"><tspan
+         sodipodi:role="line"
+         id="tspan9246"
+         style="stroke-width:0"></tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="47.594196"
+       y="80.290825"
+       id="text9252"><tspan
+         sodipodi:role="line"
+         id="tspan9250"
+         style="font-size:12.7px;stroke-width:0"
+         x="47.594196"
+         y="80.290825">SERVER HOST</tspan></text>
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9306"
+       width="109.06835"
+       height="12.545443"
+       x="48.000595"
+       y="91.832642" />
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="48.076809"
+       y="124.9242"
+       id="text9310"><tspan
+         sodipodi:role="line"
+         id="tspan9308"
+         style="stroke-width:0"
+         x="48.076809"
+         y="124.9242">SERVER PORT</tspan></text>
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9312"
+       width="108.58574"
+       height="12.043626"
+       x="48.483208"
+       y="139.00351" />
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="47.352909"
+       y="182.9382"
+       id="text9333"><tspan
+         sodipodi:role="line"
+         id="tspan9331"
+         style="stroke-width:0"
+         x="47.352909"
+         y="182.9382">ENTER RSA PUB KEY</tspan></text>
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9335"
+       width="108.58574"
+       height="12.545443"
+       x="48.483208"
+       y="206.24709" />
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="71.743637"
+       y="246.89432"
+       id="text9339"><tspan
+         sodipodi:role="line"
+         id="tspan9337"
+         style="stroke-width:0"
+         x="71.743637"
+         y="246.89432">CONNECT</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="61.475689"
+       y="267.46884"
+       id="text9365"><tspan
+         sodipodi:role="line"
+         id="tspan9363"
+         style="stroke-width:0"
+         x="61.475689"
+         y="267.46884">DISCONNECT</tspan></text>
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9391"
+       width="363.31604"
+       height="255.92705"
+       x="218.2907"
+       y="17.061802" />
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9393"
+       width="3.5127239"
+       height="17.272858"
+       x="488.26865"
+       y="178.43605" />
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="221.82912"
+       y="293.56366"
+       id="text9449"><tspan
+         sodipodi:role="line"
+         id="tspan9447"
+         style="stroke-width:0"
+         x="221.82912"
+         y="293.56366">RECIPIENT</tspan></text>
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9479"
+       width="231.92677"
+       height="9.1440001"
+       x="300"
+       y="284.49554" />
+    <rect
+       style="fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       id="rect9479-0"
+       width="231.92677"
+       height="41.76215"
+       x="300"
+       y="305.14624" />
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="224.4389"
+       y="314.22739"
+       id="text9483"><tspan
+         sodipodi:role="line"
+         id="tspan9481"
+         style="stroke-width:0"
+         x="224.4389"
+         y="314.22739">MESSAGE</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-size:12.7px;font-family:Raleway;-inkscape-font-specification:Raleway;fill:#99a0a2;fill-opacity:1;stroke-width:0"
+       x="367.67163"
+       y="362.81421"
+       id="text9709"><tspan
+         sodipodi:role="line"
+         id="tspan9707"
+         style="stroke-width:0"
+         x="367.67163"
+         y="362.81421">SEND MESSAGE</tspan></text>
+  </g>
+</svg>

@@ -13,7 +13,7 @@ from PySide2.QtGui import QIcon, QStandardItem, QStandardItemModel
 appInstance = QApplication(sys.argv)
 
 window = QWidget()
-window.setGeometry(400, 400, 800, 400)
+window.setGeometry(400, 400, 300, 200)
 window.setWindowTitle('Planck Server Alpha')
 
 with open("styles.css", "r") as f:
@@ -26,12 +26,16 @@ set_address_button = QPushButton("Assign server port")
 port_label = QLabel("Enter server port (defaults to 6626)")
 start_server_button = QPushButton("Start chat server")
 stop_server_button = QPushButton("Stop chat server")
+host_display = QLabel()
+server_status = QLabel("Offline")
 
 layout.addWidget(port_label, 0, 0)
 layout.addWidget(port_select, 1, 0)
 layout.addWidget(set_address_button, 2, 0)
 layout.addWidget(start_server_button, 3, 0)
 layout.addWidget(stop_server_button, 4, 0)
+layout.addWidget(server_status, 1, 1)
+layout.addWidget(host_display, 2, 1)
 
 window.setLayout(layout)
 
@@ -42,6 +46,8 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(server_address)
 sock.settimeout(0.1)
 sock.listen(1)
+
+host_display.setText(f"Server address: {socket.gethostbyname(socket.gethostname())}:{server_address[1]}")
 
 connections = []
 ids = []
@@ -126,11 +132,14 @@ def run_chatserver():
         except:
           break
       if (received != bytes()):
-        received = str(received, 'utf-8')
-        if received[0] == "§":
+        try:
+          receivedStr = str(received, 'utf-8')
+        except:
+          receivedStr = "@"
+        if receivedStr[0] == "§":
           # is a command
-          sender = re.search('§(.*?)>', received).group(1)
-          command = re.search('>(.*?)>\[', received).group(1)
+          sender = re.search('§(.*?)>', receivedStr, re.DOTALL).group(1)
+          command = re.search('>(.*?)>\[', receivedStr, re.DOTALL).group(1)
           match command:
             case "online_user":
               identifiers = re.search('§\[(.*)\]').group(1).split(",")
@@ -166,11 +175,13 @@ def run_chatserver():
               break
             case _:
               print("invalid command")
-        elif received[0] == "@":
+        elif receivedStr[0] == "@":
           # is a message
-          sender = re.search('@(.*?)>', received).group(1)
-          recipient = re.search('>(.*?)>\[', received).group(1)
-          connections[ids.index(recipient)].sendall(bytes(received, encoding="utf-8"))
+          receivedStr = str(received.split(b">[]")[0].decode()) + ">[]"
+          print(receivedStr)
+          sender = re.search('@(.*)>', receivedStr, re.DOTALL).group(1)
+          recipient = re.search('>(.*)>\[', receivedStr, re.DOTALL).group(1)
+          connections[ids.index(recipient)].sendall(received)
 
 chat_server_thread = threading.Thread(target=run_chatserver)
 
@@ -180,13 +191,14 @@ def start_server():
   start_time = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
   running = True
   chat_server_thread.start()
+  server_status.setText("Online")
 
 def stop_server():
-  global running
+  global running, chat_server_thread
   if not running: return
-  sock.listen(0)
   running = False
   chat_server_thread = threading.Thread(target=run_chatserver)
+  server_status.setText("Offline")
 
 def set_server_address():
   global server_address

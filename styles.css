@@ -7,6 +7,7 @@ QWidget {
 	color: #99a0a2;
 	background-color: #011117;
 	font-family: "Inter";
+  font-weight: 500;
 }
 
 QLineEdit, QListView, QPlainTextEdit {
