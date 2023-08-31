@@ -112,7 +112,7 @@ def toggle_connect_to_server():
     sock.sendall(message)
     connected = True
     currconnectionlabel.setText(hostentry.text() + ":" + portentry.text())
-  connectedlabel = "Online."
+  connectedlabel.setText("Online.")
   connlightbutton.setIcon(QIcon("static/images/online.png"))
   identifier = identity.text()
   print('handshake completed with server')
@@ -128,7 +128,7 @@ def disconnect_from_server():
     sock.close()
     connected = False
     currconnectionlabel.setText("No server connected.")
-    connectedlabel = "Offline."
+    connectedlabel.setText("Offline.")
     connlightbutton.setIcon(QIcon("static/images/idle.png"))
 
 def send_message():
