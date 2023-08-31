@@ -95,7 +95,7 @@ def wait_for_messages():
           # Recieved a message
           # print(str(received, 'utf-8'))
           message = rsa.decrypt(received.split(b'>[]')[1], privkey).decode()
-          disp = QStandardItem(f"Message from {re.search('@(.*?)>', str(received.split(b'>[]')[0], 'utf-8'), re.DOTALL).group(1)} at {datetime.now().strftime('%H:%M:%S')}:\n{message}")
+          disp = QStandardItem(f"Message from {re.search('---\n(.*?)\n---', str(received.split(b'>[]')[0], 'utf-8'), re.DOTALL).group(1)} at {datetime.now().strftime('%H:%M:%S')}:\n{message}")
           model.appendRow(disp)
         break
 
