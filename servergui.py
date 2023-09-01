@@ -224,6 +224,8 @@ def index():
     <body>
       <div id="conns-stats">
         <h1>Planck server status</h1>
+        <h1>Server {server_status.text()}</h1>
+        <h1>Server started at {start_time}</h1>
         <img src="/static/images/online.png"> Online users: {online_ct} <br>
         <img src="/static/images/idle.png"> Idle users: {idle_ct} <br>
       </div>

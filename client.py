@@ -95,8 +95,9 @@ def wait_for_messages():
           # Recieved a message
           # print(str(received, 'utf-8'))
           message = rsa.decrypt(received.split(b'>[]')[1], privkey).decode()
-          disp = QStandardItem(f"Message from {re.search('---\n(.*?)\n---', str(received.split(b'>[]')[0], 'utf-8'), re.DOTALL).group(1)} at {datetime.now().strftime('%H:%M:%S')}:\n{message}")
+          disp = QStandardItem(f"Message from {re.search('-----BEGIN RSA PUBLIC KEY-----(.*?)-----END RSA PUBLIC KEY-----', str(received.split(b'>[]')[0], 'utf-8'), re.DOTALL).group(1)} at {datetime.now().strftime('%H:%M:%S')}:\n{message}")
           model.appendRow(disp)
+          messageBox.scrollToBottom()
         break
 
 def toggle_connect_to_server():
@@ -155,6 +156,7 @@ def send_message():
   print(f'message contents: {message}')
   print(f'to {recipient} on server {hostentry.text()}')
   sock.sendall(bytes(f"@{identifier}>{toidentry.text()}>[]", encoding='utf-8') + rsa.encrypt(messageentry.toPlainText().encode(), rsa.PublicKey.load_pkcs1(toidentry.text().encode())))
+  messageentry.clear()
 
 def toggle_idle():
   sock.sendall(bytes(f"§{identifier}>toggle_idle>[]", encoding='utf-8'))
