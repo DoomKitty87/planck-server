@@ -83,7 +83,7 @@ def run_chatserver():
           print(key)
           print(curr_client)
         except:
-          print('handshake failed with ' + curr_address)
+          print(f'handshake failed with {curr_address}')
         
       finally:
         online_ct += 1

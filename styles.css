@@ -30,3 +30,7 @@ QPushButton {
   border-radius: 7px;
   padding: 3px;
 }
+
+QStandardItem {
+  user-select: none;
+}
