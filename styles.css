@@ -1,18 +1,32 @@
 @font-face {
 	font-family: "Inter";
-	src: url(static/inter.ttf) format("truetype");
+	src: url("static/inter.ttf");
 }
 
 QWidget {
-	color: #99a0a2;
-	background-color: #011117;
+	color: #ffffff;
+	background-color: #1f2639;
 	font-family: "Inter";
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1px;
 }
 
 QLineEdit, QListView, QPlainTextEdit {
 	border-width: 2px;
 	border-style: solid;
 	border-color: #010a0e;
+  border-radius: 7px;
 }
 
+QLineEdit, QPlainTextEdit {
+  padding: 2px;
+}
+
+QPushButton {
+  border-width: 2px;
+  border-style: solid;
+  border-color: #010a0e;
+  border-radius: 7px;
+  padding: 3px;
+}

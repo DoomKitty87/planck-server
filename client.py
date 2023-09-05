@@ -10,7 +10,7 @@ from PySide2.QtGui import QIcon, QStandardItem, QStandardItemModel
 appInstance = QApplication(sys.argv)
 
 window = QWidget()
-window.setGeometry(400, 400, 600, 400)
+window.setGeometry(400, 400, 900, 600)
 window.setWindowTitle('Planck Client Alpha')
 
 with open("styles.css", "r") as f:
@@ -73,6 +73,9 @@ layout.addWidget(label4, 15, 2)
 layout.addWidget(messageentry, 15, 3)
 layout.addWidget(sendmessagebutton, 16, 3)
 layout.addWidget(messageBox, 0, 2, 13, 2)
+
+layout.setHorizontalSpacing(25)
+layout.setVerticalSpacing(10)
 
 window.setLayout(layout)
 
