@@ -86,6 +86,8 @@ privkey = None
 pubkey = None
 
 def wait_for_messages():
+  #with open("styles.css", "r") as f:
+  #  window.setStyleSheet(f.read())
   global connected
   if (connected == True):
     received = bytes()

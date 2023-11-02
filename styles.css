@@ -3,6 +3,13 @@
 	src: url("static/inter.ttf");
 }
 
+* {
+  font-family: "Inter";
+  font-weight: 400;
+  font-size: 12px;
+  color: #ffffff;
+}
+
 QWidget {
 	color: #ffffff;
 	background-color: #1f2639;
@@ -12,23 +19,28 @@ QWidget {
   letter-spacing: 1px;
 }
 
-QLineEdit, QListView, QPlainTextEdit {
-	border-width: 2px;
-	border-style: solid;
-	border-color: #010a0e;
-  border-radius: 7px;
+QLineEdit, QPlainTextEdit {
+  border: 2px solid #010a0e;
+  border-radius: 3px;
 }
 
 QLineEdit, QPlainTextEdit {
   padding: 2px;
 }
 
+QListView {
+  border: 2px solid #010a0e;
+  border-radius: 3px;
+}
+
 QPushButton {
   border-width: 2px;
   border-style: solid;
   border-color: #010a0e;
-  border-radius: 7px;
+  border-radius: 3px;
   padding: 3px;
+  background-color: #010a0e;
+  max-width: 125%;
 }
 
 QStandardItem {
